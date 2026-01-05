@@ -197,23 +197,20 @@ pub enum VolType {
     Static,
 }
 
-impl From<VolType> for u8 {
-    fn from(value: VolType) -> Self {
+impl From<income::VolType> for VolType {
+    fn from(value: income::VolType) -> Self {
         match value {
-            VolType::Dynamic => 1,
-            VolType::Static => 2,
+            income::VolType::Dynamic => VolType::Dynamic,
+            income::VolType::Static => VolType::Static,
         }
     }
 }
 
-impl TryFrom<u8> for VolType {
-    type Error = ();
-
-    fn try_from(value: u8) -> Result<Self, Self::Error> {
+impl From<VolType> for income::VolType {
+    fn from(value: VolType) -> Self {
         match value {
-            1 => Ok(Self::Dynamic),
-            2 => Ok(Self::Static),
-            _ => Err(()),
+            VolType::Dynamic => income::VolType::Dynamic,
+            VolType::Static => income::VolType::Static,
         }
     }
 }
@@ -296,7 +293,7 @@ impl TryFrom<VidHdr> for Vid {
             ..
         } = value;
 
-        let vol_type = vol_type.try_into()?;
+        let vol_type = vol_type.into();
         let copy_flag = copy_flag != 0;
 
         Ok(Self {
@@ -406,7 +403,7 @@ impl VolTableRecord {
             reserved_pebs: Default::default(),
             alignment: Default::default(),
             data_pad: Default::default(),
-            vol_type: Default::default(),
+            vol_type: income::VolType::Dynamic,
             upd_marker: Default::default(),
             name: std::array::from_fn(|_| 0u8),
             name_len: Default::default(),
@@ -448,7 +445,7 @@ impl TryFrom<VtblRecord> for VolTableRecord {
             ..
         } = value;
 
-        let vol_type = vol_type.try_into()?;
+        let vol_type = vol_type.into();
         let upd_marker = upd_marker != 0;
         let name = std::str::from_utf8(&name[..name_len as usize])
             .map_err(|_| ())?

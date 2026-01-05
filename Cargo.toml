@@ -6,13 +6,13 @@ edition = "2021"
 license = "Apache-2.0"
 
 [dependencies]
-anyhow = "1.0.*"
-clap = {version="4", features=["derive"]}
-crc = "3.0.*"
-deku = "0.15.*"
-evdev = "0.12.*"
-howudoin = {version="0.1.*", features=["term-line"]}
-i2c-linux = "0.1.*"
-income = "0.1.*"
-nix = "0.26.*"
-retry = "2.0.0"
+anyhow = "1.0.100"
+clap = {version="4.5.54", features=["derive"]}
+crc = "3.4.0"
+deku = "0.19"
+evdev = "0.13.2"
+howudoin = {version="0.1.2", features=["term-line"]}
+i2c-linux = "0.1.2"
+income = { git = "https://github.com/wcampbell0x2a/income", rev = "0583eec" }
+nix = { version = "0.30.1", features = ["mount", "ioctl"] }
+retry = "2.1.0"

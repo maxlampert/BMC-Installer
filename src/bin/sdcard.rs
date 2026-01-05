@@ -123,8 +123,8 @@ fn confirm_keypress(stop_flag: &atomic::AtomicBool) -> bool {
 
         for event in events {
             // Only follow key events
-            let key = match event.kind() {
-                evdev::InputEventKind::Key(key) => key,
+            let key = match event.destructure() {
+                evdev::EventSummary::Key(_, key, _) => key,
                 _ => continue,
             };
 
